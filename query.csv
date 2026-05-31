@@ -1,0 +1,8 @@
+﻿Search/Combination,ESR,Range Criteria,Partial
+"LclRef, CreDteNtv","R, E","CreDteNtv eq 10, ValDte gte 10",None
+_id,E,None,None
+"OrigCusPayRef,  ValDte [or] CreDteNtv","E, [R,R]","CreDteNtv lte 5, ValDte gte 10",Later
+"UMR, CreDteNtv","R,E",CreDteNtv lte 10,None
+"InstCur, InstAmt, ValDte [or] CreDteNtv","E,R, [R,R]",CreDteNtv lte 10,None
+"Orgldr, InstCur, InstAmt, ValDte [or] CreDteNtv","E,E,R, [R,R]",CreDteNtv lte 10,None
+"Bnfldr, InstCur, InstAmt, ValDte [or] CreDteNtv","E,E,R, [R,R]",CreDteNtv lte 10,None

@@ -1,0 +1,7 @@
+﻿Search/Combination,ESR,Range Criteria,Partial,Sorting Logic, Limit
+"balance, name, string","R, E, E",None,None,"","200"
+"string, date","E,R","date=30",None,"","200"
+"balance, name, string, age","R, E, E, R","balance=5000,age=10","balance/gt/50,name/ne/Chris Doe","","200"
+"name, age","E, R",None,None,"","200"
+"city, age [or] fav","E, [R,R]","age=20,fav=10","age/lt/120","","200"
+
