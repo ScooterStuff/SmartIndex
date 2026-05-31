@@ -8,6 +8,13 @@ from .graph_ordering import GraphOrderer
 from .index_generator import IndexGenerator
 from .minset import MinSetOptimiser
 from .report import ReportGenerator
+from .kendall_tau_explorer import (
+    KendallTauExplorer,
+    KendallTauResult,
+    kendall_tau_distance,
+    permutations_within_distance,
+)
+from .greedy_remover import GreedyRemover, GreedyRemovalResult
 
 __all__ = [
     "Query",
@@ -20,4 +27,10 @@ __all__ = [
     "IndexGenerator",
     "MinSetOptimiser",
     "ReportGenerator",
+    "KendallTauExplorer",
+    "KendallTauResult",
+    "kendall_tau_distance",
+    "permutations_within_distance",
+    "GreedyRemover",
+    "GreedyRemovalResult",
 ]
