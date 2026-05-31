@@ -1,5 +1,9 @@
 # SmartIndex
 
+[![tests](https://github.com/ScooterStuff/SmartIndex/actions/workflows/tests.yml/badge.svg)](https://github.com/ScooterStuff/SmartIndex/actions/workflows/tests.yml)
+[![python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 SmartIndex is a MongoDB composite index recommendation tool. Given a CSV
 that describes an application's query patterns, it produces a **minimal
 set** of composite indexes that respect MongoDB's prefix rule, follow the
