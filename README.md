@@ -32,7 +32,7 @@ Designing MongoDB composite indexes by hand is hard:
 
 - **Field order matters.** A composite index `{a:1, b:1, c:1}` only
   efficiently supports filters/sorts on its **leftmost prefixes**:
-  `{a}`, `{a,b}`, `{a,b,c}`. It does *not* efficiently serve `{b}`,
+  `{a}`, `{a,b}`, `{a,b,c}`. It does _not_ efficiently serve `{b}`,
   `{c}`, `{b,c}`, or `{b,a}`.
 - **Different operators want different positions.** Equality predicates,
   sort keys, and range predicates each behave differently inside an
@@ -133,12 +133,12 @@ are spread more evenly, which usually makes the field a better filter.
 
 Sample distributions:
 
-| Distribution                      | Entropy (bits) |
-|-----------------------------------|----------------|
-| `[0.5, 0.5]`                      | 1.000          |
-| `[0.25, 0.25, 0.25, 0.25]`        | 2.000          |
-| `[0.7, 0.1, 0.1, 0.1]`            | 1.356          |
-| `[0.99, 0.01]`                    | 0.081          |
+| Distribution               | Entropy (bits) |
+| -------------------------- | -------------- |
+| `[0.5, 0.5]`               | 1.000          |
+| `[0.25, 0.25, 0.25, 0.25]` | 2.000          |
+| `[0.7, 0.1, 0.1, 0.1]`     | 1.356          |
+| `[0.99, 0.01]`             | 0.081          |
 
 **Equality fields** are scored directly from their entropy. **Range
 fields** are continuous; SmartIndex either samples bucket counts from
@@ -308,14 +308,14 @@ and drops the index again.
 
 ### Optional add-on validators
 
-Two opt-in validators run *after* the main pipeline and require a live
+Two opt-in validators run _after_ the main pipeline and require a live
 MongoDB connection. They are off by default; enable each with a `-`
 flag:
 
-| Flag                  | Tool                  | Question it answers                              |
-|-----------------------|-----------------------|--------------------------------------------------|
-| `-kt` / `--kendall-tau` | Kendall-Tau Explorer | Is there a better order *near* the predicted one? |
-| `-gr` / `--greedy-remove` | Greedy Remover    | Can we drop trailing fields without losing perf?  |
+| Flag                      | Tool                 | Question it answers                               |
+| ------------------------- | -------------------- | ------------------------------------------------- |
+| `-kt` / `--kendall-tau`   | Kendall-Tau Explorer | Is there a better order _near_ the predicted one? |
+| `-gr` / `--greedy-remove` | Greedy Remover       | Can we drop trailing fields without losing perf?  |
 
 **Kendall-Tau Explorer** ([smartindex/kendall_tau_explorer.py](smartindex/kendall_tau_explorer.py))
 generates permutations within Kendall-Tau distance ≤ `--kt-distance`
@@ -346,14 +346,14 @@ Search/Combination,ESR,Range Criteria,Partial,Sorting Logic,Limit
 
 Column meanings:
 
-| Column                | Description                                                     |
-|-----------------------|-----------------------------------------------------------------|
-| `Search/Combination`  | Comma-separated field names used by the query                   |
-| `ESR`                 | Per-field tag: `E` equality, `S` sort, `R` range                |
-| `Range Criteria`      | Optional `field=value` or `field op value` constraints          |
-| `Partial`             | Optional partial-index filter (e.g. `balance/gt/50`)            |
-| `Sorting Logic`       | Optional sort description                                       |
-| `Limit`               | Optional query `.limit()` value                                 |
+| Column               | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| `Search/Combination` | Comma-separated field names used by the query          |
+| `ESR`                | Per-field tag: `E` equality, `S` sort, `R` range       |
+| `Range Criteria`     | Optional `field=value` or `field op value` constraints |
+| `Partial`            | Optional partial-index filter (e.g. `balance/gt/50`)   |
+| `Sorting Logic`      | Optional sort description                              |
+| `Limit`              | Optional query `.limit()` value                        |
 
 `[or]` expands a single row into one query per alternative:
 
