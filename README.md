@@ -268,6 +268,8 @@ smartindex/
   index_generator.py         # candidate index generation
   minset.py                  # trie-based prefix optimiser
   mongo_tester.py            # optional .explain() runner
+  kendall_tau_explorer.py    # optional add-on validator
+  greedy_remover.py          # optional add-on optimiser
   report.py                  # human-readable output
 tests/
   test_csv_reader.py
@@ -275,6 +277,8 @@ tests/
   test_graph_ordering.py
   test_index_generator.py
   test_minset.py
+  test_kendall_tau_explorer.py
+  test_greedy_remover.py
 synthetic_data/              # MongoDB synthetic data generators
 safe/                        # legacy backup scripts (not used)
 test_query.csv               # sample CSV (uses synthetic data fields)
@@ -301,6 +305,34 @@ When `--mongo-uri`, `--db`, and `--collection` are supplied,
 `--test` is also passed, `MongoTester` creates each recommended index,
 runs an `.explain()` for a representative query, collects the metrics,
 and drops the index again.
+
+### Optional add-on validators
+
+Two opt-in validators run *after* the main pipeline and require a live
+MongoDB connection. They are off by default; enable each with a `-`
+flag:
+
+| Flag                  | Tool                  | Question it answers                              |
+|-----------------------|-----------------------|--------------------------------------------------|
+| `-kt` / `--kendall-tau` | Kendall-Tau Explorer | Is there a better order *near* the predicted one? |
+| `-gr` / `--greedy-remove` | Greedy Remover    | Can we drop trailing fields without losing perf?  |
+
+**Kendall-Tau Explorer** ([smartindex/kendall_tau_explorer.py](smartindex/kendall_tau_explorer.py))
+generates permutations within Kendall-Tau distance ≤ `--kt-distance`
+(default 2) of the graph-derived order, scores each via `.explain()`,
+and keeps the best one. Tunables: `--kt-distance`, `--kt-max-perms`.
+
+**Greedy Remover** ([smartindex/greedy_remover.py](smartindex/greedy_remover.py))
+repeatedly drops the trailing field of one index, re-scores the whole
+workload, and accepts the removal only if total degradation stays
+within `--gr-degradation` (default `0.10` = 10%). Stops when no further
+removal is acceptable. Tunables: `--gr-degradation`, `--gr-min-length`.
+
+```powershell
+python -m smartindex.main test_query.csv `
+    --mongo-uri mongodb://localhost:27017 --db testdb --collection orders `
+    --test -kt --kt-distance 2 -gr --gr-degradation 0.1
+```
 
 ## CSV format
 
